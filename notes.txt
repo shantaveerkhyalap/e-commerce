@@ -1,0 +1,34 @@
+to add blank folder into the git repository we need to add .gitkeep file into those blankfolders
+press cntrl+shift+p and type >add git keep
+
+.populate("orders"); // should use only when referencing the objectId's
+
+set DEBUG=development:* : set as a environment variable...for all development users..where development is the environment variable
+if we wrote production in the place of development then we should create production.json in the place of development.json for creating the MONGODB-URI
+all logs wiil show only when they set dbgr like const dbgr = require("debug")("development:mongoose"); 
+
+to get process environment:
+1. console.log(process.env.NODE_ENV); : if it give undefine its a clear sign that , that has not set up right now what environment is
+2. to set env : set NODE_ENV=development in the cmd ()if(process.env.NODE_ENV === development) {}
+3. after running it will log the set up NODE_ENV like development , or production or test...
+   these set up environment variable wiil save in memory
+
+module.exports.generateToken = generateToken;   
+to exort this we should use curly braces : const {generateToken} = require("../utils/generateToken"); because the name is same on both sides as 
+module.exports = {
+  generateToken: generateToken
+};
+
+1rem = 16px
+vite = is used to refresh the server quickly..!..and it is for frontend and nodemon for backend..!
+  Shortcuts
+  press r + enter to restart the server
+  press u + enter to show server url
+  press o + enter to open in browser
+  press c + enter to clear console
+  press q + enter to quit
+
+
+in tailwindcss w-6/12 means width: 50%
+object-cover
+font-bold
