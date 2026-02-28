@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: e-commerce
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+        labels:
+          app: backend
+    spec:
+      tolerations:
+      - key: "prod"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+
+      containers:
+      - name: backend
+        image: shantaveerkhyalap/project_1-backend:latest
+        ports: 
+        - containerPort: 8006
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: EXPRESS_SESSION_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: ecommerce-secrets
+              key: express_session_secret
+        - name: MONGO_URI
+          valueFrom:
+            secretKeyRef:
+              name: ecommerce-secrets
+              key: mongo_uri
+
+        readinessProbe:
+          tcpSocket:
+            port: 8006
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+        livenessProbe:
+          tcpSocket:
+            port: 8006
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+
+
+
+
