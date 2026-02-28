@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
@@ -8,12 +9,11 @@ const productsRouter = require("./routes/productsRouter");
 const usersRouter = require("./routes/usersRouter");
 const index = require("./routes/index");
 const expressSession = require("express-session");
-require("dotenv").config();
 
-// CORS – allow React dev server
+// CORS – allow React dev server (update origin if you change the frontend port)
 app.use(
     cors({
-        origin: "http://localhost:5173",
+        origin: process.env.CORS_ORIGIN || "http://localhost:8081",
         credentials: true,
     })
 );
@@ -35,8 +35,11 @@ app.use("/api/users", usersRouter);
 app.use("/api/products", productsRouter);
 app.use("/api", index);
 
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
 // ---------- Start ----------
-const PORT = 8001;
+const PORT = process.env.PORT || 8086;
 app.listen(PORT, () => {
     console.log(`Backend running on http://localhost:${PORT}`);
 });

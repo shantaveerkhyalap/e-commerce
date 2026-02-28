@@ -1,0 +1,58 @@
+version: "3.8"
+services: 
+    backend:
+        build:
+            context: ./backend
+        container_name: backend-cont
+        ports:
+            - "8006:8006"
+        restart: always
+        env_file: 
+            - ./backend/.env
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:8006/health"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
+        networks: 
+            - e-commerce-app
+
+    frontend:
+        build:
+            context: ./frontend
+        container_name: frontend-cont
+        ports: 
+            - "8081:80"
+        restart: always
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
+        depends_on:
+            backend:
+                condition: service_healthy
+        networks: 
+            - e-commerce-app
+    
+    #mongodb:
+     #    image: mongo:latest
+     #   container_name: mongoDB-cont
+     #   ports:
+     #       - "27017:27017"
+     #   restart: always
+     #   volumes:
+     #       - mongo-data:/data/db
+     #   healthcheck:
+     #       test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+     #       interval: 30s
+     #       timeout: 10s    
+     #       retries: 5
+     #   networks:
+     #       - e-commerce-app
+        
+networks:
+    e-commerce-app:
+        driver: bridge
+
+        
